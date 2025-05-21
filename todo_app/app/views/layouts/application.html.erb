@@ -1,0 +1,12 @@
+<header>
+  <h2><%= @greeting %></h2>
+  <% if current_user %>
+    <p>Welcome, <%= current_user.username %>!</p>
+    <% if @last_seen %>
+      <p>Last visited: <%= time_ago_in_words(@last_seen) %> ago</p>
+    <% end %>
+  <% end %>
+
+  <p>Total visits: <%= session[:total_visits] %></p>
+  <p>This page visits: <%= session[:page_visits][request.path] %></p>
+</header>
