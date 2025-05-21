@@ -1,0 +1,24 @@
+<h1 class="text-3xl font-bold mb-4 text-center">New To-Do</h1>
+
+<%= form_with model: @todo, local: true, class: 'max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md' do |form| %>
+  <% if @todo.errors.any? %>
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
+      <ul>
+        <% @todo.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :title, 'Task Title', class: 'block text-gray-700 font-semibold' %>
+    <%= form.text_field :title, class: 'w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500' %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.submit 'Save Task', class: 'w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-700' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to List', todos_path, class: 'text-blue-500 hover:text-blue-700' %>
