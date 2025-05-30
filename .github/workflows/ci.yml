@@ -7,7 +7,7 @@ on:
 
 jobs:
   scan_ruby:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -18,12 +18,15 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Fix executable permissions
+        run: chmod +x bin/*
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bundle exec brakeman --no-pager
 
   scan_js:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -34,12 +37,15 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Fix executable permissions
+        run: chmod +x bin/*
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bundle exec importmap audit
+        run: bin/importmap audit
 
   lint:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,16 +55,19 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Fix executable permissions
+        run: chmod +x bin/*
 
       - name: Lint code for consistent style
         run: bundle exec rubocop -f github
 
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Install packages
-        run: choco install -y googlechrome
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -69,15 +78,20 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Fix executable permissions
+        run: |
+          chmod +x bin/*
+          chmod +x bin/rails
+
       - name: Run tests
         env:
           RAILS_ENV: test
-        run: bundle exec rails db:test:prepare && bundle exec rails test && bundle exec rails test:system
+        run: bin/rails db:test:prepare test test:system
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: screenshots
-          path: ${{ github.workspace }}\tmp\screenshots
+          path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
