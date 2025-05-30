@@ -23,7 +23,9 @@ gem "jbuilder"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable.
+# These are required for the Solidus e-commerce platform, but can be used in any Rails application.
+
 gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
