@@ -42,7 +42,7 @@ jobs:
         run: chmod +x bin/*
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bundle exec importmap audit
+        run: ruby bin/importmap audit
 
   lint:
     runs-on: ubuntu-latest
