@@ -62,12 +62,18 @@ jobs:
       - name: Lint code for consistent style
         run: bundle exec rubocop -f github
 
-  test:
+   test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
+
+      - name: Install ChromeDriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-chromedriver
+          sudo ln -fs /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
 
       - name: Checkout code
         uses: actions/checkout@v4
